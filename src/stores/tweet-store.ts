@@ -73,7 +73,8 @@ export default class TweetStore {
 
     @computed
     get minutesRunning(): number {
-      return Math.round((now() - this.startTime)/ 120000)
+      const milliseconds = now() - this.startTime
+      return new Date(milliseconds).getMinutes()
     }
 
     @computed
