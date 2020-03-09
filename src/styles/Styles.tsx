@@ -18,24 +18,21 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    maxHeight: 700,
+    height: 700,
+    overflow: 'auto',
+  },
+  paperList: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    height: 560,
     overflow: 'auto',
   },
   appBarBtn: {
     '& > *': {
       margin: theme.spacing(1),
     },
-  },
-  list: {
-    width: '100%',
-    maxWidth: 360,
-    maxHeight: 700,
-    backgroundColor: theme.palette.background.paper,
-  },
-  inline: {
-    display: 'inline',
-    paddingRight: 5,
-  },
+  }
 }))
 
 export default useStyles
