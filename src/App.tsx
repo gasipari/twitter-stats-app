@@ -29,8 +29,7 @@ const App = () => {
 
   // start data stream
   const start = () => {
-    // cleanup list & start timer
-    tweetStore.resetTweets()
+    // start timer
     tweetStore.updateStartTime(Date.now())
 
     // subscribe to twitter strean
@@ -39,7 +38,7 @@ const App = () => {
     })
     pubnub.addListener({
       message: (data: any) => {
-        if (data.message.place && data.message.place.country && data.message.lang === 'en') {
+        if (data.message.place && data.message.place.country) {
           tweetStore.addTweet(data.message)
         }
       },
@@ -52,7 +51,7 @@ const App = () => {
       channels: ['pubnub-twitter'],
     })
     console.log('===========tweets stream stoped=========================')
-    console.log(tweetStore.totalTweetsNumber)
+    console.log(tweetStore.tweetCount)
     console.log('====================================')
   }
 
@@ -98,12 +97,12 @@ const App = () => {
                 </Grid>
                 <Grid container spacing={3}>
                   <Grid item xs={6}>
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paperList}>
                       <StatsList title="Country" type="countries" />
                     </Paper>
                   </Grid>
                   <Grid item xs>
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paperList}>
                       <StatsList title="Language" type="languages" />
                     </Paper>
                   </Grid>

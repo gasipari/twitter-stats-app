@@ -1,48 +1,58 @@
 import React from 'react'
 import { useObserver } from 'mobx-react-lite'
+import { Virtuoso } from 'react-virtuoso'
 
-import List from '@material-ui/core/List'
+import { makeStyles } from '@material-ui/core/styles'
 import ListItem from '@material-ui/core/ListItem'
-import Divider from '@material-ui/core/Divider'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 
-import useStyles from '../styles/Styles'
 import { useStore } from '../helpers/use-store'
-import TweetItem from '../stores/tweet-item'
 
+
+// styles
+const useStyles = makeStyles((theme) => ({
+  inline: {
+    display: 'inline',
+    paddingRight: 5,
+  },
+  list: {
+    height: 680
+  }
+}))
 
 const TweetsList = () => {
   const classes = useStyles()
-
   const tweetStore = useStore()
 
   return useObserver(() => (
-    <List className={classes.list}>
-      {tweetStore.allTweets.map((row: TweetItem) => (
-        <div key={row.id}>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt={row.userName} src={row.profileImage} />
-            </ListItemAvatar>
-            <ListItemText
-              primary={row.screenName}
-              secondary={(
-                <>
-                  <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
-                    {row.userName}
-                  </Typography>
-                  {row.text}
-                </>
-                )}
-            />
+    <Virtuoso
+    totalCount={tweetStore.allTweets.length}
+    overscan={200}
+    item={index => {
+      return (
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar alt={tweetStore.allTweets[index].userName} src={tweetStore.allTweets[index].profileImage} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={tweetStore.allTweets[index].screenName}
+            secondary={(
+              <>
+                <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                  {tweetStore.allTweets[index].userName}
+                </Typography>
+                {tweetStore.allTweets[index].text}
+              </>
+              )}
+          />
           </ListItem>
-          <Divider variant="inset" component="li" />
-        </div>
-      ))}
-    </List>
+      )
+    }}
+    className={classes.list}
+  />
   ))
 }
 

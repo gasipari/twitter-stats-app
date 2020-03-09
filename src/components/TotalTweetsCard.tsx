@@ -16,7 +16,7 @@ const TotalTweetsCard = () => {
           Total Tweets
         </Typography>
         <Typography variant="h5" component="h2">
-          {tweetStore.totalTweetsNumber}
+          {tweetStore.tweetCount}
         </Typography>
       </CardContent>
     </Card>
