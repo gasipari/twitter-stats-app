@@ -10,6 +10,9 @@ export default class TweetStore {
       tweets.forEach(this.addTweet)
     }
 
+
+    @observable tweetCount: number = 0
+
     @observable startTime: number = Date.now()
 
     @observable countries: any[] = []
@@ -21,6 +24,9 @@ export default class TweetStore {
       if (!find(this.list, { id: rawTweet.id })) {
         this.list.push(new TweetItem(rawTweet.id, rawTweet.text, rawTweet.user.name,
           rawTweet.user.screen_name, rawTweet.user.profile_image_url_https))
+
+        // incremenet tweetCount
+        this.tweetCount += 1
 
         // update countries stats
         const countryIndex = this.countries.find(
@@ -66,18 +72,13 @@ export default class TweetStore {
     }
 
     @computed
-    get totalTweetsNumber(): number {
-      return this.list.length
-    }
-
-    @computed
     get minutesRunning(): number {
-      return Math.round((now() - this.startTime) / 60000)
+      return Math.round((now() - this.startTime)/ 120000)
     }
 
     @computed
     get averageTweetsPerMinute(): number {
-      return this.totalTweetsNumber / ((now() - this.startTime) / 60000)
+      return this.tweetCount / ((now() - this.startTime) / 60000)
     }
 
     @computed
