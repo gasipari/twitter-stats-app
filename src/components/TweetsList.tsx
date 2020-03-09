@@ -1,6 +1,6 @@
-import React, { useState, useEffect }  from 'react'
+import React from 'react'
+import { useObserver } from 'mobx-react-lite'
 
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Divider from '@material-ui/core/Divider'
@@ -9,45 +9,41 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import Avatar from '@material-ui/core/Avatar'
 import Typography from '@material-ui/core/Typography'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-    },
-    inline: {
-      display: 'inline',
-    },
-  }),
-);
+import useStyles from '../styles/Styles'
+import { useStore } from '../helpers/use-store'
+import TweetItem from '../stores/tweet-item'
+
 
 const TweetsList = () => {
   const classes = useStyles()
-  const [list, setList] = useState({ items: [] })
 
-  return (
-    <List className={classes.root}>
-        {list.items.map((row: any)=> (
+  const tweetStore = useStore()
+
+  return useObserver(() => (
+    <List className={classes.list}>
+      {tweetStore.allTweets.map((row: TweetItem) => (
         <div key={row.id}>
-            <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                    <Avatar alt={row.user.name} src={row.user.profile_image_url_https} />
-                </ListItemAvatar>
-                <ListItemText primary={row.user.screen_name} secondary={ <React.Fragment>
-                    <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
-                        {row.user.name}
-                    </Typography>
-                    {row.text}
-                    </React.Fragment>
-                    }
-                    />
-            </ListItem>
-            <Divider variant="inset" component="li" />
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt={row.userName} src={row.profileImage} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={row.screenName}
+              secondary={(
+                <>
+                  <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+                    {row.userName}
+                  </Typography>
+                  {row.text}
+                </>
+                )}
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
         </div>
-        ))}
+      ))}
     </List>
-  )
+  ))
 }
 
 export default TweetsList
