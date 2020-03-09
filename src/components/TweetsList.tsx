@@ -28,31 +28,24 @@ const TweetsList = () => {
   const tweetStore = useStore()
 
   return useObserver(() => (
-    <Virtuoso
-    totalCount={tweetStore.allTweets.length}
-    overscan={200}
-    item={index => {
+    <Virtuoso className={classes.list} totalCount={tweetStore.allTweets.length} overscan={200} item={index=> {
       return (
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar alt={tweetStore.allTweets[index].userName} src={tweetStore.allTweets[index].profileImage} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={tweetStore.allTweets[index].screenName}
-            secondary={(
-              <>
-                <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
-                  {tweetStore.allTweets[index].userName}
-                </Typography>
-                {tweetStore.allTweets[index].text}
-              </>
-              )}
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar alt={tweetStore.allTweets[index].userName} src={tweetStore.allTweets[index].profileImage} />
+        </ListItemAvatar>
+        <ListItemText primary={tweetStore.allTweets[index].screenName} secondary={( <>
+          <Typography component="span" variant="body2" className={classes.inline} color="textPrimary">
+            {tweetStore.allTweets[index].userName}
+          </Typography>
+          {tweetStore.allTweets[index].text}
+          </>
+          )}
           />
-          </ListItem>
+      </ListItem>
       )
-    }}
-    className={classes.list}
-  />
+      }}
+      />
   ))
 }
 
